@@ -4,12 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <style>
+        .buttonEdit {
+            background: gold;
+            position: relative;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+    </style>
 </head>
 <body>
-<div>
-    <th:block th:each="msg : ${messages}">
-        <h1 th:text="${msg}"></h1>
-    </th:block>
-</div>
+<h1>Users</h1>
+<button onclick="window.location.href = '/users/new';">Add new user</button>
+
+<br>
+<br>
+<table border="1">
+    <tr>
+        <th th:width="50">UserId</th>
+        <th th:width="120">Name</th>
+        <th th:width="120">Surname</th>
+        <th th:width="50">Age</th>
+        <th th:width="150">Email</th>
+        <th th:width="50">Edit</th>
+        <th th:width="50">Delete</th>
+    </tr>
+    <tr th:each="user : ${users}">
+
+        <td><a th:href="@{'/users/?id=' + ${user.getId()}}" th:utext="${user.getId()}">UserId</a></td>
+        <td th:utext="${user.getName()}">Name</td>
+        <td th:utext="${user.getLastname()}">Surname</td>
+        <td th:utext="${user.getAge()}">Age</td>
+        <td th:utext="${user.getEmail()}">Email</td>
+
+        <td>
+            <a th:href="@{/users/edit(id=${user.id})}" th:text="Edit"></a>
+        </td>
+        <td>
+            <form th:action="@{/users/delete(id=${user.getId()})}" th:method="post">
+                <button type='submit' name='your_name' value='your_value' class='buttonDelete'>Delete</button>
+            </form>
+        </td>
+
+
+    </tr>
+</table>
 </body>
 </html>

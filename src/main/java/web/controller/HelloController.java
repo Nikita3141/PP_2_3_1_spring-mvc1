@@ -1,24 +1,63 @@
 package web.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import web.model.User;
+import web.service.UserService;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.Valid;
 
+@RequestMapping("/users")
 @Controller
 public class HelloController {
 
-	@GetMapping(value = "/")
-	public String printWelcome(ModelMap model) {
-		List<String> messages = new ArrayList<>();
-		messages.add("Hello!");
-		messages.add("I'm Spring MVC application");
-		messages.add("5.2.0 version by sep'19 ");
-		model.addAttribute("messages", messages);
+	private UserService userService;
+
+	public HelloController (UserService userService){
+		this.userService=userService;
+	}
+
+	@GetMapping
+	public String get(ModelMap model) {
+
+		model.addAttribute("users",userService.getAllUsers() );
 		return "index";
 	}
-	
+
+	@GetMapping("/")
+	public String show (@RequestParam  Long id, Model model){
+
+		model.addAttribute("user",userService.getUserById(id));
+		return "user";
+	}
+
+	@GetMapping("/new")
+	public String newUser (Model model){
+		model.addAttribute("user",new User());
+		return "new";
+	}
+	@PostMapping
+	public String create (@ModelAttribute ("user") @Valid User user){
+		userService.addUser(user);
+		return "redirect:/users";
+	}
+	@GetMapping("/edit")
+	public String edit(Model model, @RequestParam(value = "id") Long id) {
+		model.addAttribute("user", userService.getUserById(id));
+		return "edit";
+	}
+
+	@PatchMapping("/edit")
+	public String update(@ModelAttribute("user") User user) {
+		userService.updateUser( user);
+		return "redirect:/users";
+	}
+	@PostMapping(value = "/delete")
+	public String deleteUser(@RequestParam("id") Long id) {
+		userService.removeUser(id);
+		return "redirect:/users";
+	}
 }
+
