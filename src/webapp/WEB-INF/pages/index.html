@@ -41,8 +41,8 @@
             <a th:href="@{/users/edit(id=${user.id})}" th:text="Edit"></a>
         </td>
         <td>
-            <form th:action="@{/users/delete(id=${user.getId()})}" th:method="post">
-                <button type='submit' name='your_name' value='your_value' class='buttonDelete'>Delete</button>
+            <form th:action="@{/users/delete(id=${user.getId()})}" th:method="delete">
+                <button type='hidden' name='your_name' value='delete' class='buttonDelete'>Delete</button>
             </form>
         </td>
 

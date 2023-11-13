@@ -11,11 +11,11 @@ import javax.validation.Valid;
 
 @RequestMapping("/users")
 @Controller
-public class HelloController {
+public class UserController {
 
 	private UserService userService;
 
-	public HelloController (UserService userService){
+	public UserController(UserService userService){
 		this.userService=userService;
 	}
 
@@ -54,7 +54,7 @@ public class HelloController {
 		userService.updateUser( user);
 		return "redirect:/users";
 	}
-	@PostMapping(value = "/delete")
+	@DeleteMapping(value = "/delete")
 	public String deleteUser(@RequestParam("id") Long id) {
 		userService.removeUser(id);
 		return "redirect:/users";
